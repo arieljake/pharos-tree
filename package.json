@@ -1,0 +1,37 @@
+{
+  "name": "pharos-tree",
+  "version": "0.0.0",
+  "description": "Create trees of nodes. A node tree module Used by Pharos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test",
+    "travis-test": "make test && ((cat coverage/lcov.info | coveralls) || exit 0)",
+    "view-cover": "open coverage/index.html",
+    "vc": "open coverage/index.html",
+    "help": "make help"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jasonpincin/pharos-tree.git"
+  },
+  "keywords": [
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jasonpincin/pharos-tree/issues"
+  },
+  "homepage": "https://github.com/jasonpincin/pharos-tree",
+  "author": {
+    "name": "Jason Pincin",
+    "email": "jason@pincin.com",
+    "url": "http://jason.pincin.com/"
+  },
+  "contributors": [
+  ],
+  "devDependencies": {
+    "istanbul": "~0.2.8",
+    "tap-spec": "~0.1.9",
+    "tap-dot": "^0.2.2",
+    "tape": "~2.12.3"
+  }
+}
