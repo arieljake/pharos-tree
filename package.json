@@ -34,5 +34,8 @@
     "tap-dot": "^0.2.2",
     "tap-spec": "~0.1.9",
     "tape": "~2.12.3"
+  },
+  "dependencies": {
+    "through2": "~0.4.1"
   }
 }

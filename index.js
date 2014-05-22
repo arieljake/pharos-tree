@@ -1,5 +1,4 @@
-var Readable  = require('stream').Readable,
-    Transform = require('stream').Transform,
+var through2  = require('through2'),
     validPath = require('./lib/valid-path'),
     error     = require('./lib/error')
 
@@ -7,20 +6,16 @@ module.exports = function createTree () {
     'use strict';
     var data       = Object.create(null),
         numStreams = 0,
-        changes    = new Readable({ objectMode: true })
-    changes._read  = function _read () {}
+        changes    = through2.obj()
 
     // create stream of changes
     function createStream (options) {
         options = options || {}
 
-        var stream = new Transform( {objectMode:true} )
-        stream._transform = function _transform (chunk, encoding, cb) {
+        var stream = through2.obj(function transform (chunk, encoding, cb) {
             stream.push(options.objectMode ? chunk : JSON.stringify(chunk)+'\n')
-        }
-        stream._write = function _write () {
-            stream._transform.apply(this, arguments)
-        }
+            cb()
+        })
         stream.close = function close () {
             setImmediate(function () {
                 stream.push(null)
@@ -34,7 +29,9 @@ module.exports = function createTree () {
     }
     // feed change streams
     function feed(op, node) {
-        if (numStreams > 0) changes.push({op:op, node:node})
+        if (numStreams > 0) {
+            changes.push({op:op, node:node})
+        }
     }
 
     // tree node factory
@@ -60,10 +57,15 @@ module.exports = function createTree () {
             return data[this.path] ? true : false
         } },
         data: { enumerable: true, set: function (value) {
-            var same = (this._data === value)
-            this._data = value
-            if (data[this.path] && !same) feed('change', this)
-            else if (!data[this.path]) this.persist()
+            if (!data[this.path]) {
+                persistNode(this)
+                this._data = value
+                feed('create', this)
+            }
+            else if (this._data !== value) {
+                this._data = value
+                feed('change', this)
+            }
         }, get: function () {
             return this._data
         } },
@@ -100,10 +102,14 @@ module.exports = function createTree () {
         addChild: { value: function () {
         } },
         removeChild: { value: function () {
+        } },
+        toJSON: { enumerable: true, value: function () {
+            return {
+                path: this.path,
+                data: this._data
+            }
         } }
     })
-    // expose prototype for extending, modifying, and isPrototypeOf
-    Object.defineProperty(tree, 'node', { value: TreeNode.prototype })
 
     // tree entry point / selector
     function tree (path) {
