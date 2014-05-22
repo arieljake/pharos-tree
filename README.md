@@ -2,9 +2,13 @@
 
 Create trees of nodes. A node tree module Used by Pharos.
 
+## example
+
+## api
+
 ## testing
 
-`npm test [--dot | --spec] [--coverage]`
+`[grep=pattern] npm test [--dot | --spec] [--coverage]`
 
 ### options
 
@@ -14,21 +18,20 @@ Create trees of nodes. A node tree module Used by Pharos.
 
 ### patterns
 
-Only test files matching a certain pattern may be run by prefixing the 
+Only run test files matching a certain pattern by prefixing the 
 test command with `grep=pattern`. Example:
 
 ```
-grep=connect npm test --dot
+grep=stuff npm test --dot
 ```
-
-### watching
-
-First:
-`npm install -g nodemon`
-
-Then you can:
-`nodemon -x npm test [--dot | --spec] [--coverage]`
 
 ### html coverage report
 
 Open it with `npm run view-cover` or `npm run vc`
+
+## benchmarking
+
+`[grep=pattern] npm run benchmark`
+
+Benchmarks support running pattern-matched files in the perf directory just as 
+tests do.

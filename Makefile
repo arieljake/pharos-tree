@@ -26,6 +26,9 @@ help:
 	@echo $(cc_blue)"To run tests:"$(cc_normal)
 	@echo "  [grep=pattern] npm test [--dot | --spec] [--coverage ]"
 	@echo
+	@echo $(cc_blue)"To run benchmarks:"$(cc_normal)
+	@echo "  [grep=pattern] npm run benchmark"
+	@echo
 
 test:
 	$(if $(grep), @echo "Running test files that match pattern: $(grep)\n",)
@@ -41,10 +44,18 @@ test:
 ifdef npm_config_coverage
 	@echo
 	@istanbul report text | grep -v "Using reporter" | grep -v "Done"
-	@istanbul report html > /dev/null
 endif
+	@istanbul report html > /dev/null
 	@rm -f coverage/error
 	@istanbul check-coverage --statements 100 --branches 100 --functions 100 --lines 100 2>&1 | cat > coverage/error
 	$(if $(filter-out tap, $(reporter)), @printf $(cc_red),)
 	$(if $(grep),,@if [ -s coverage/error ]; then echo; grep ERROR coverage/error; echo; exit 1; fi)
 	$(if $(filter-out tap, $(reporter)), @printf $(cc_normal),)
+
+benchmark:
+	@echo
+	@date
+	$(if $(grep), @echo "Running perf files that match pattern: $(grep)",)
+	@echo "--------------------------------------------------------------"
+	@PERFS=`find ./perf -name "*.js" -type f -maxdepth 1 | grep ""$(grep)`; for PERF in $$PERFS; do node $$PERF; done 
+	@echo "--------------------------------------------------------------"

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "make test",
+    "benchmark": "make benchmark",
     "travis-test": "make test && ((cat coverage/lcov.info | coveralls) || exit 0)",
     "view-cover": "open coverage/index.html",
     "vc": "open coverage/index.html",
@@ -14,8 +15,7 @@
     "type": "git",
     "url": "git://github.com/jasonpincin/pharos-tree.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/jasonpincin/pharos-tree/issues"
@@ -26,12 +26,13 @@
     "email": "jason@pincin.com",
     "url": "http://jason.pincin.com/"
   },
-  "contributors": [
-  ],
+  "contributors": [],
   "devDependencies": {
+    "benchmark": "^1.0.0",
     "istanbul": "~0.2.8",
-    "tap-spec": "~0.1.9",
+    "microtime": "^0.6.0",
     "tap-dot": "^0.2.2",
+    "tap-spec": "~0.1.9",
     "tape": "~2.12.3"
   }
 }
