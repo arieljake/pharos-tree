@@ -1,5 +1,6 @@
 var through2  = require('through2'),
     validPath = require('./lib/valid-path'),
+    parents   = require('./lib/parents'),
     error     = require('./lib/error')
 
 module.exports = function createTree () {
@@ -41,10 +42,13 @@ module.exports = function createTree () {
         return node
     }
     // tree node persist
-    function persistNode (node) {
-        if (!validPath(node.path)) throw error('INVALIDPATH', 'invalid path: ' + node.path)
+    function persistNode (node, validated) {
+        if (node.exists) return node
+        if (!validated && !validPath(node.path)) throw error('INVALIDPATH', 'invalid path: ' + node.path)
         Object.defineProperty(node, 'path', {enumerable:true, configurable: false, writable: false, value:node.path})
         data[node.path] = node
+        if (node.parent) persistNode(node.parent, true)
+        feed('create', node)
         return node
     }
     // tree node prototype
@@ -53,14 +57,15 @@ module.exports = function createTree () {
         // properties
         path: { enumerable:true, configurable:true, writable:true, value:undefined },
         exists: { enumerable:true, get: function () {
-            if (!this.path) return false
             return data[this.path] ? true : false
         } },
+        valid: { enumerable:true, get: function () {
+            return this.exists ? true : validPath(this.path)
+        } },
         data: { enumerable: true, set: function (value) {
-            if (!data[this.path]) {
-                persistNode(this)
+            if (!this.exists) {
                 this._data = value
-                feed('create', this)
+                persistNode(this)
             }
             else if (this._data !== value) {
                 this._data = value
@@ -70,13 +75,14 @@ module.exports = function createTree () {
             return this._data
         } },
         parent: { enumerable: true, get: function () {
+            if (!this.valid) return undefined
+            var ppath = parents.immediate(this.path)
+            return ppath ? tree(ppath) : null
         } },
         children: { enumerable: true, get: function () {
         } },
         // functions
         persist: { value: function () {
-            if (data[this.path]) return this
-            feed('create', this)
             return persistNode(this)
         } },
         set: { value: function (value) {
@@ -91,7 +97,7 @@ module.exports = function createTree () {
             return this
         } },
         remove: { value: function () {
-            if (data[this.path]) {
+            if (this.exists) {
                 delete data[this.path]
                 feed('remove', this)
             }
@@ -103,7 +109,7 @@ module.exports = function createTree () {
         } },
         removeChild: { value: function () {
         } },
-        toJSON: { enumerable: true, value: function () {
+        toJSON: { value: function () {
             return {
                 path: this.path,
                 data: this._data
@@ -132,7 +138,7 @@ module.exports = function createTree () {
         remove: { value: function () {
             throw new Error('Can not remove root node.')
         } },
-        parent: { enumerable: true, value: undefined }
+        parent: { enumerable: true, value: null }
     })
 
     return tree

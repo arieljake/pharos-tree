@@ -3,6 +3,7 @@ var test  = require('tape'),
 
 test('valid-path', function (t) {
     t.notOk(valid({})             , ' requires a string')
+    t.notOk(valid()               , ' requires an arg')
     t.notOk(valid('a/b/c')        , ' requires a leading /')
     t.notOk(valid('/a/b/c/')      , ' prohibits a trailing /')
     t.notOk(valid('/$')           , ' prohibits $')

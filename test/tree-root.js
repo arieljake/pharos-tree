@@ -13,8 +13,8 @@ test('root node', function (t) {
     }
 
     t.ok(root.path === '/'        , 'path is /')
+    t.ok(root.parent === null     , 'parent is null')
     t.throws(chPath, Error        , 'does not permit path change')
-    t.ok(root.parent === undefined, 'has an undefined parent')
     t.throws(rm, Error            , 'cannot be removed')
 
     t.end()
