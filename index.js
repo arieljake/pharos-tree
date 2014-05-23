@@ -135,17 +135,14 @@ module.exports = function createTree () {
         } },
         child: { value: function (name) {
             var path = this.path + '/' + name
-            for (var i = 0; i < this._children.length; i++)
-                if (this._children[i].path === path) return this._children[i]
-        } },
-        addChild: { value: function () {
-        } },
-        removeChild: { value: function () {
+            return tree(path)
         } },
         toJSON: { value: function () {
             return {
                 path: this.path,
-                data: this._data
+                name: this.name,
+                data: this._data,
+                version: this.version
             }
         } }
     })

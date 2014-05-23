@@ -5,7 +5,7 @@ test('change stream', function (t) {
     var tree      = createTree(),
         objStream = tree.createStream( {objectMode:true} ),
         bufStream = tree.createStream(),
-        bufExpected = '{"op":"create","node":{"path":"/test"}}\n'
+        bufExpected = '{"op":"create","node":{"path":"/test","name":"test","version":1}}\n'
 
     t.plan(6)
     objStream.on('data', function (data) {
