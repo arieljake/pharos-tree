@@ -11,6 +11,7 @@ test('node', function (t) {
 
     t.ok(tree.node.isPrototypeOf(node)    , 'was created from tree.node prototype')
     t.equal(node.path, '/is/a/test'       , 'path matches selection')
+    t.equal(node.name, 'test'             , 'name is last component of path')
     t.equal(node.version, undefined       , 'version is undefined before persisted')
     t.doesNotThrow(chPath, Error          , 'permits path change before persisted')
     t.equal(node.path, '/a/test'          , 'path reflects change')

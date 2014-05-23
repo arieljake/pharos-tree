@@ -12,8 +12,9 @@ test('root node', function (t) {
         root.remove()
     }
 
-    t.ok(root.path === '/'        , 'path is /')
-    t.ok(root.parent === null     , 'parent is null')
+    t.equal(root.path, '/'        , 'path is /')
+    t.equal(root.name, '/'        , 'name is /')
+    t.equal(root.parent, null     , 'parent is null')
     t.throws(chPath, Error        , 'does not permit path change')
     t.throws(rm, Error            , 'cannot be removed')
 

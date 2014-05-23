@@ -86,6 +86,9 @@ module.exports = function createTree () {
         valid: { enumerable:true, get: function () {
             return this.exists ? true : validPath(this.path)
         } },
+        name: { enumerable: true, get: function () {
+            return this.path === '/' ? '/' : this.path.split('/').pop()
+        } },
         data: { enumerable: true, set: function (value) {
             if (!this.exists) {
                 this._data = value
@@ -130,7 +133,10 @@ module.exports = function createTree () {
         remove: { value: function () {
             return removeNode(this)
         } },
-        child: { value: function () {
+        child: { value: function (name) {
+            var path = this.path + '/' + name
+            for (var i = 0; i < this._children.length; i++)
+                if (this._children[i].path === path) return this._children[i]
         } },
         addChild: { value: function () {
         } },
