@@ -6,6 +6,7 @@ var through2  = require('through2'),
 module.exports = function createTree () {
     'use strict';
     var data       = Object.create(null),
+        version    = 0,
         numStreams = 0,
         changes    = through2.obj()
 
@@ -39,6 +40,8 @@ module.exports = function createTree () {
     function createNode (path) {
         var node = new TreeNode
         node.path = path
+        node._children = []
+        node._version = undefined
         return node
     }
     // tree node persist
@@ -47,9 +50,30 @@ module.exports = function createTree () {
         if (!validated && !validPath(node.path)) throw error('INVALIDPATH', 'invalid path: ' + node.path)
         Object.defineProperty(node, 'path', {enumerable:true, configurable: false, writable: false, value:node.path})
         data[node.path] = node
-        if (node.parent) persistNode(node.parent, true)
+        if (node.parent) {
+            persistNode(node.parent, true)
+            node.parent._children.push(node)
+        }
+        incVersion(node)
         feed('create', node)
         return node
+    }
+    function removeNode (node, skipParent) {
+        if (!node.exists) return node
+        for (var i = 0; i < node.children.length; i++) removeNode(node.children[i], true)
+        if (!skipParent) {
+            var parentChildIdx = node.parent._children.indexOf(node)
+            node.parent._children.splice(parentChildIdx, 1)
+        }
+        delete data[node.path]
+        incVersion()
+        feed('remove', node)
+        return node
+    }
+    function incVersion (node) {
+        if (node && node._version) node._version++
+        else if (node) node._version = 1
+        version++
     }
     // tree node prototype
     function TreeNode () {}
@@ -69,10 +93,14 @@ module.exports = function createTree () {
             }
             else if (this._data !== value) {
                 this._data = value
+                incVersion(this)
                 feed('change', this)
             }
         }, get: function () {
             return this._data
+        } },
+        version: { enumerable: true, get: function () {
+            return this._version
         } },
         parent: { enumerable: true, get: function () {
             if (!this.valid) return undefined
@@ -80,6 +108,9 @@ module.exports = function createTree () {
             return ppath ? tree(ppath) : null
         } },
         children: { enumerable: true, get: function () {
+            var list = []
+            for (var i = 0; i < this._children.length; i++) list[i] = this._children[i]
+            return list
         } },
         // functions
         persist: { value: function () {
@@ -97,11 +128,7 @@ module.exports = function createTree () {
             return this
         } },
         remove: { value: function () {
-            if (this.exists) {
-                delete data[this.path]
-                feed('remove', this)
-            }
-            return this
+            return removeNode(this)
         } },
         child: { value: function () {
         } },
@@ -122,6 +149,10 @@ module.exports = function createTree () {
         return data[path] || createNode(path)
     }
     Object.defineProperties(tree, {
+        // version of tree
+        version: { enumerable: true, get: function () {
+            return version
+        } },
         // tree node count getter
         nodeCount: { enumerable: true, get: function () {
             return Object.keys(data).length
