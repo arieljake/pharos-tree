@@ -1,14 +1,16 @@
 var through2  = require('through2'),
+    Int64     = require('node-int64'),
     validPath = require('./lib/valid-path'),
     parents   = require('./lib/parents'),
     error     = require('./lib/error')
 
 module.exports = function createTree () {
     'use strict';
-    var data       = Object.create(null),
-        version    = 0,
-        numStreams = 0,
-        changes    = through2.obj()
+    var data        = Object.create(null),
+        transaction = 0,
+        period      = 0,
+        numStreams  = 0,
+        changes     = through2.obj()
 
     // create stream of changes
     function createStream (options) {
@@ -73,7 +75,7 @@ module.exports = function createTree () {
     function incVersion (node) {
         if (node && node._version) node._version++
         else if (node) node._version = 1
-        version++
+        transaction++
     }
     // tree node prototype
     function TreeNode () {}
@@ -140,7 +142,6 @@ module.exports = function createTree () {
         toJSON: { value: function () {
             return {
                 path: this.path,
-                name: this.name,
                 data: this._data,
                 version: this.version
             }
@@ -152,9 +153,17 @@ module.exports = function createTree () {
         return data[path] || createNode(path)
     }
     Object.defineProperties(tree, {
-        // version of tree
-        version: { enumerable: true, get: function () {
-            return version
+        // pharos transaction ID
+        pxid: { enumerable: true, get: function () {
+            return new Int64(period, transaction)
+        } },
+        // current period
+        period: { enumerable: true, get: function () {
+            return period
+        } },
+        // transaction of current period
+        transaction: { enumerable: true, get: function () {
+            return transaction
         } },
         // tree node count getter
         nodeCount: { enumerable: true, get: function () {
