@@ -46,7 +46,7 @@ module.exports = function createTree () {
     // feed change streams
     function feed(op, pnode) {
         if (numStreams > 0) {
-            changes.push({op:op, pnode:pnode})
+            changes.push({op:op, pnode:pnode.toJSON()})
         }
     }
 
