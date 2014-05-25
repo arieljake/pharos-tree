@@ -1,16 +1,16 @@
 var test       = require('tape'),
-    createTree = require('..')
+    pharosTree = require('..')
 
 test('pnode.data', function (t) {
-    var tree        = createTree(),
-        pnode       = tree('/test'),
+    var ptree       = pharosTree(),
+        pnode       = ptree('/test'),
         changeCount = 0
     function assign (v) {
         return function () {
             pnode.data = v
         }
     }
-    tree.createStream( {objectMode:true} ).on('data', function (event) {
+    ptree.createStream( {objectMode:true} ).on('data', function (event) {
         if (event.op !== 'change') return
         changeCount++
         t.ok(changeCount === 1     , 'reassignment with same value should not produce change event')

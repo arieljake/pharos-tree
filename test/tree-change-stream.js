@@ -1,10 +1,10 @@
 var test       = require('tape'),
-    createTree = require('..')
+    pharosTree = require('..')
 
 test('change stream', function (t) {
-    var tree         = createTree(),
-        objStream    = tree.createStream( {objectMode:true} ),
-        bufStream    = tree.createStream(),
+    var ptree        = pharosTree(),
+        objStream    = ptree.createStream( {objectMode:true} ),
+        bufStream    = ptree.createStream(),
         bufExpected0 = '{"op":"create","pnode":{"path":"/test","data":1,"version":1}}\n',
         bufExpected1 = '{"op":"change","pnode":{"path":"/test","data":2,"version":2}}\n',
         bufExpected2 = '{"op":"remove","pnode":{"path":"/test","data":2,"version":2}}\n',
@@ -20,9 +20,9 @@ test('change stream', function (t) {
     bufStream.on('end', function () {
         t.pass(                                                    'in simple mode emits end when close() is called')
     })
-    tree('/test').set(1)
-    tree('/test').set(2)
-    tree('/test').remove()
+    ptree('/test').set(1)
+    ptree('/test').set(2)
+    ptree('/test').remove()
     setImmediate(function () {
         t.equal(typeof objRcvd[0],                                 'object', 'in object mode emits objects')
         t.deepEqual(JSON.stringify(objRcvd[0])+'\n', bufExpected0, 'in object mode emits proper create event 1st')

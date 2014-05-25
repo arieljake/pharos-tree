@@ -1,17 +1,17 @@
 var test       = require('tape'),
-    createTree = require('..'),
+    pharosTree = require('..'),
     Int64      = require('node-int64'),
     isInt64    = Int64.prototype.isPrototypeOf.bind(Int64.prototype)
 
 test('pnode', function (t) {
-    var tree  = createTree(),
-        pnode = tree('/is/a/test')
+    var ptree = pharosTree(),
+        pnode = ptree('/is/a/test')
     function chPath () {
         'use strict';
         pnode.path = '/a/test'
     }
 
-    t.ok(tree.pnode.isPrototypeOf(pnode)   , 'was created from tree.pnode prototype')
+    t.ok(ptree.pnode.isPrototypeOf(pnode)   , 'was created from ptree.pnode prototype')
     t.equal(pnode.path, '/is/a/test'       , 'path matches selection')
     t.equal(pnode.name, 'test'             , 'name is last component of path')
     t.equal(pnode.version, undefined       , 'version is undefined before persisted')

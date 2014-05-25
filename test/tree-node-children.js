@@ -1,14 +1,14 @@
 var test       = require('tape'),
-    createTree = require('..')
+    pharosTree = require('..')
 
 test('pnode.children', function (t) {
-    var tree   = createTree(),
-        child1 = tree('/a/1').persist(),
-        child2 = tree('/a/2').persist(),
-        child3 = tree('/a/3'),
-        pnode  = tree('/a')
+    var ptree  = pharosTree(),
+        child1 = ptree('/a/1').persist(),
+        child2 = ptree('/a/2').persist(),
+        child3 = ptree('/a/3'),
+        pnode  = ptree('/a')
 
-    t.equal(tree('/b').children.length, 0  , 'should be empty on a new pnode')
+    t.equal(ptree('/b').children.length, 0  , 'should be empty on a new pnode')
     t.ok(pnode.exists                      , 'should cause parent to exist after persisted')
     t.equal(pnode.children.length, 2       , 'should have a length = to number of children persisted')
     t.equal(pnode.children.pop(), child2   , '.pop() should return last child added')

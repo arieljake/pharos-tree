@@ -1,11 +1,11 @@
 var test       = require('tape'),
-    createTree = require('..')
+    pharosTree = require('..')
 
-test('tree.createStream', function (t) {
-    var tree     = createTree(),
-        stream   = tree.createStream()
+test('ptree.createStream', function (t) {
+    var ptree    = pharosTree(),
+        stream   = ptree.createStream()
 
-    t.ok(stream.on&&stream.pipe&&stream.resume, 'returns a Readable stream')
+    t.ok(stream.on&&stream.pipe && stream.resume, 'returns a Readable stream')
 
     t.end();
 });

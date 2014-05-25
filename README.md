@@ -46,7 +46,14 @@ The output of the above will be:
 
 ## api
 
-TODO
+`var createTree = require('pharos-tree')`
+
+### var ptree = createTree()
+
+Create a new Pharos tree.
+
+### var pnode = tree()
+
 
 ## testing
 

@@ -12,12 +12,12 @@ module.exports = function createTree () {
         numStreams  = 0,
         changes     = through2.obj()
 
-    // increment tree transaction id
+    // increment ptree transaction id
     function incTransaction () {
         transaction++
         return transaction
     }
-    // increment tree period
+    // increment ptree period
     function incPeriod () {
         period++
         transaction = 0
@@ -111,7 +111,7 @@ module.exports = function createTree () {
     // increment pnode version
     function incPnodeVersion (pnode) {
         pnode._version = pnode._version ? pnode._version + 1 : 1
-        pnode._mpxid = tree.pxid
+        pnode._mpxid = ptree.pxid
         pnode._mtime = new Date
         if (!pnode._cpxid) pnode._cpxid = pnode._mpxid
         if (!pnode._ctime) pnode._ctime = pnode._mtime
@@ -147,16 +147,16 @@ module.exports = function createTree () {
         if (!pnode.valid) return undefined
         var parentPaths = parents(pnode.path),
         list            = []
-        for (var i = 0; i < parentPaths.length; i++) list.push( tree(parentPaths[i]) )
+        for (var i = 0; i < parentPaths.length; i++) list.push( ptree(parentPaths[i]) )
         return list
     }
     // get immediate parent of pnode
     function pnodeParent (pnode) {
         if (!pnode.valid) return undefined
         var parentPath = parents.immediate(pnode.path)
-        return parentPath ? tree(parentPath) : null
+        return parentPath ? ptree(parentPath) : null
     }
-    // tree pnode prototype
+    // ptree pnode prototype
     function TreePnode () {}
     TreePnode.prototype = Object.create(Object, {
         // properties
@@ -179,7 +179,7 @@ module.exports = function createTree () {
         set            : { value: function (value) { return setPnodeData(this, value) } },
         unset          : { value: function ()      { return unsetPnodeData(this) } },
         remove         : { value: function ()      { return removePnode(this) } },
-        child          : { value: function (name)  { return tree(this.path + '/' + name) } },
+        child          : { value: function (name)  { return ptree(this.path + '/' + name) } },
         // JSON representation
         toJSON: { value: function () {
             return {
@@ -190,11 +190,11 @@ module.exports = function createTree () {
         } }
     })
 
-    // tree entry point / selector
-    function tree (path) {
+    // ptree entry point / selector
+    function ptree (path) {
         return data[path] || createPnode(path)
     }
-    Object.defineProperties(tree, {
+    Object.defineProperties(ptree, {
         // properties
         pxid        : { enumerable: true, get: function () { return new Int64(period, transaction) } },
         period      : { enumerable: true, get: function () { return period } },
@@ -216,5 +216,5 @@ module.exports = function createTree () {
         parent: { enumerable: true, value: null }
     })
 
-    return tree
+    return ptree
 }

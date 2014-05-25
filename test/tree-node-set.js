@@ -1,9 +1,9 @@
 var test       = require('tape'),
-    createTree = require('..')
+    pharosTree = require('..')
 
 test('pnode.set()', function (t) {
-    var tree  = createTree(),
-        pnode = tree('/test')
+    var ptree = pharosTree(),
+        pnode = ptree('/test')
 
     t.equal(pnode.set('stuff'), pnode, 'returns pnode')
     t.ok(pnode.exists                , 'causes pnode to persist')

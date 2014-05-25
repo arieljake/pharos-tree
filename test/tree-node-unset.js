@@ -1,12 +1,12 @@
 var test       = require('tape'),
-    createTree = require('..')
+    pharosTree = require('..')
 
 test('pnode.unset()', function (t) {
-    var tree  = createTree(),
-        pnode = tree('/test')
+    var ptree = pharosTree(),
+        pnode = ptree('/test')
 
     var changeCount = 0
-    tree.createStream( {objectMode:true} ).on('data', function (event) {
+    ptree.createStream( {objectMode:true} ).on('data', function (event) {
         if (event.op !== 'change') return
         changeCount++
         t.equal(changeCount, 1               , 'does not emit a change unless there was a value')

@@ -1,15 +1,15 @@
 var test       = require('tape'),
-    createTree = require('..')
+    pharosTree = require('..')
 
 test('pnode.persist()', function (t) {
-    var tree  = createTree(),
-        pnode = tree('/is/a/test')
+    var ptree = pharosTree(),
+        pnode = ptree('/is/a/test')
     function chPath () {
         'use strict';
         pnode.path = '/is/a/test'
     }
     function persistInvalid () {
-        tree('a/b').persist()
+        ptree('a/b').persist()
     }
 
     t.equal(pnode.persist(), pnode, 'returns reference to pnode')

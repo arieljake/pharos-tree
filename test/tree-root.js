@@ -1,9 +1,9 @@
 var test       = require('tape'),
-    createTree = require('..')
+    pharosTree = require('..')
 
 test('root pnode', function (t) {
-    var tree = createTree(),
-        root = tree('/')
+    var ptree = pharosTree(),
+        root  = ptree('/')
     function chPath () {
         'use strict';
         root.path = '/something/else'

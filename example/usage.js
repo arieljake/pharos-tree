@@ -1,24 +1,24 @@
-var createTree = require('..'),
+var pharosTree = require('..'),
     assert     = require('assert');
 
 
-var tree = createTree();
-tree.createStream().pipe(process.stdout);
+var ptree = pharosTree();
+ptree.createStream().pipe(process.stdout);
 
-var task1 = tree('/tasks/1');
+var task1 = ptree('/tasks/1');
 task1.set('crawl');
 
-tree('/tasks/2').set('walk');
-tree('/tasks/3').set('run');
+ptree('/tasks/2').set('walk');
+ptree('/tasks/3').set('run');
 
 task1.child('status').set('pending');
 assert(task1.child('status').version === 1);
 task1.child('status').set('completed');
 assert(task1.child('status').version === 2);
 
-var tasks = tree('/tasks').children;
+var tasks = ptree('/tasks').children;
 assert(tasks.length === 3);
-assert(tree.pnode.isPrototypeOf(tasks[0]));
+assert(ptree.pnode.isPrototypeOf(tasks[0]));
 assert(tasks[0].data === 'crawl');
 assert(tasks[0].children[0].name === 'status');
 
