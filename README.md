@@ -45,6 +45,41 @@ The output of the above will be:
 {"op":"remove","pnode":{"path":"/tasks/1/status","data":"completed","version":2}}
 ```
 
+**Table of Contents**
+
+- [api](#api)
+  - [var ptree = pharosTree()](#var-ptree-=-pharostree)
+  - [ptree.period](#ptreeperiod)
+  - [ptree.txid](#ptreetxid)
+  - [ptree.pnodeCount](#ptreepnodecount)
+  - [ptree.createStream(options)](#ptreecreatestreamoptions)
+  - [var pnode = tree('/path/of/pnode')](#var-pnode-=-treepathofpnode)
+  - [pnode.path](#pnodepath)
+  - [pnode.name](#pnodename)
+  - [pnode.exists](#pnodeexists)
+  - [pnode.valid](#pnodevalid)
+  - [pnode.data](#pnodedata)
+  - [pnode.version](#pnodeversion)
+  - [pnode.parent](#pnodeparent)
+  - [pnode.parents](#pnodeparents)
+  - [pnode.children](#pnodechildren)
+  - [pnode.childrenVersion](#pnodechildrenversion)
+  - [pnode.ctime](#pnodectime)
+  - [pnode.mtime](#pnodemtime)
+  - [pnode.ctxid](#pnodectxid)
+  - [pnode.mtxid](#pnodemtxid)
+  - [pnode.set(value)](#pnodesetvalue)
+  - [pnode.unset()](#pnodeunset)
+  - [pnode.remove()](#pnoderemove)
+  - [pnode.child(name)](#pnodechildname)
+  - [pnode.persist()](#pnodepersist)
+  - [pnode.toJSON()](#pnodetojson)
+- [testing](#testing)
+  - [options](#options)
+  - [patterns](#patterns)
+  - [html coverage report](#html-coverage-report)
+- [benchmarking](#benchmarking)
+
 ## api
 
 `var pharosTree = require('pharos-tree')`
