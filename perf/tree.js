@@ -9,13 +9,13 @@ function setup () {
     i = 0
 }
 
-suite.add('select new', function () {
+suite.add('select new pnode', function () {
     var node = tree('/b')
 }, { setup: setup })
-.add('persist new', function () {
+.add('persist new pnode', function () {
     var node = tree('/a'+(i++)).persist()
 }, { setup: setup })
-.add('select existing', function () {
+.add('select existing pnode', function () {
     var node = tree('/a')
 }, { setup: setup })
 .on('cycle', function (event) {
