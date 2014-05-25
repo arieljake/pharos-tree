@@ -1,6 +1,6 @@
 # pharos-tree
 
-Create trees of pnodes (Pharos nodes).
+Create trees of data nodes. Stream tree transactions.
 
 ## example
 
@@ -36,13 +36,13 @@ assert(task1.children.length === 0);
 The output of the above will be:
 
 ```json
-{"op":"create","pnode":{"path":"/tasks","version":1}}
-{"op":"create","pnode":{"path":"/tasks/1","data":"crawl","version":1}}
-{"op":"create","pnode":{"path":"/tasks/2","data":"walk","version":1}}
-{"op":"create","pnode":{"path":"/tasks/3","data":"run","version":1}}
-{"op":"create","pnode":{"path":"/tasks/1/status","data":"pending","version":1}}
-{"op":"change","pnode":{"path":"/tasks/1/status","data":"completed","version":2}}
-{"op":"remove","pnode":{"path":"/tasks/1/status","data":"completed","version":2}}
+{"op":"create","pnode":{"path":"/tasks","version":1,"ctime":"2014-05-25T21:33:58.367Z","mtime":"2014-05-25T21:33:58.367Z","ctxid":2,"mtxid":2}}
+{"op":"create","pnode":{"path":"/tasks/1","data":"crawl","version":1,"ctime":"2014-05-25T21:33:58.367Z","mtime":"2014-05-25T21:33:58.367Z","ctxid":3,"mtxid":3}}
+{"op":"create","pnode":{"path":"/tasks/2","data":"walk","version":1,"ctime":"2014-05-25T21:33:58.367Z","mtime":"2014-05-25T21:33:58.367Z","ctxid":4,"mtxid":4}}
+{"op":"create","pnode":{"path":"/tasks/3","data":"run","version":1,"ctime":"2014-05-25T21:33:58.367Z","mtime":"2014-05-25T21:33:58.367Z","ctxid":5,"mtxid":5}}
+{"op":"create","pnode":{"path":"/tasks/1/status","data":"pending","version":1,"ctime":"2014-05-25T21:33:58.367Z","mtime":"2014-05-25T21:33:58.367Z","ctxid":6,"mtxid":6}}
+{"op":"change","pnode":{"path":"/tasks/1/status","data":"completed","version":2,"ctime":"2014-05-25T21:33:58.367Z","mtime":"2014-05-25T21:33:58.367Z","ctxid":6,"mtxid":7}}
+{"op":"remove","pnode":{"path":"/tasks/1/status","data":"completed","version":2,"ctime":"2014-05-25T21:33:58.367Z","mtime":"2014-05-25T21:33:58.367Z","ctxid":6,"mtxid":7}}
 ```
 
 **Table of Contents**

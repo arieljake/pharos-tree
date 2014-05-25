@@ -1,7 +1,7 @@
 {
   "name": "pharos-tree",
   "version": "0.0.0",
-  "description": "Create trees of pnodes (Pharos nodes).",
+  "description": "Create trees of data nodes. Stream tree transactions.",
   "main": "index.js",
   "scripts": {
     "test": "make test",
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git://github.com/jasonpincin/pharos-tree.git"
   },
-  "keywords": [],
+  "keywords": ["pharos", "tree", "node-tree", "parent", "child", "data", "nodes", "pnode", "stream"],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/jasonpincin/pharos-tree/issues"
@@ -28,9 +28,9 @@
   },
   "contributors": [],
   "devDependencies": {
-    "benchmark": "^1.0.0",
+    "benchmark": "~1.0.0",
     "istanbul": "~0.2.8",
-    "tap-dot": "^0.2.2",
+    "tap-dot": "~0.2.2",
     "tap-spec": "~0.1.9",
     "tape": "~2.12.3"
   },
