@@ -48,32 +48,34 @@ The output of the above will be:
 **Table of Contents**
 
 - [api](#api)
-  - [var ptree = pharosTree()](#var-ptree-=-pharostree)
-  - [ptree.period](#ptreeperiod)
-  - [ptree.txid](#ptreetxid)
-  - [ptree.pnodeCount](#ptreepnodecount)
-  - [ptree.createStream(options)](#ptreecreatestreamoptions)
-  - [var pnode = tree('/path/of/pnode')](#var-pnode-=-treepathofpnode)
-  - [pnode.path](#pnodepath)
-  - [pnode.name](#pnodename)
-  - [pnode.exists](#pnodeexists)
-  - [pnode.valid](#pnodevalid)
-  - [pnode.data](#pnodedata)
-  - [pnode.version](#pnodeversion)
-  - [pnode.parent](#pnodeparent)
-  - [pnode.parents](#pnodeparents)
-  - [pnode.children](#pnodechildren)
-  - [pnode.childrenVersion](#pnodechildrenversion)
-  - [pnode.ctime](#pnodectime)
-  - [pnode.mtime](#pnodemtime)
-  - [pnode.ctxid](#pnodectxid)
-  - [pnode.mtxid](#pnodemtxid)
-  - [pnode.set(value)](#pnodesetvalue)
-  - [pnode.unset()](#pnodeunset)
-  - [pnode.remove()](#pnoderemove)
-  - [pnode.child(name)](#pnodechildname)
-  - [pnode.persist()](#pnodepersist)
-  - [pnode.toJSON()](#pnodetojson)
+  - [ptree](#ptree)
+      - [var ptree = pharosTree()](#var-ptree-=-pharostree)
+      - [ptree.period](#ptreeperiod)
+      - [ptree.txid](#ptreetxid)
+      - [ptree.pnodeCount](#ptreepnodecount)
+      - [ptree.createStream(options)](#ptreecreatestreamoptions)
+  - [pnode](#pnode)
+      - [var pnode = tree('/path/of/pnode')](#var-pnode-=-treepathofpnode)
+      - [pnode.path](#pnodepath)
+      - [pnode.name](#pnodename)
+      - [pnode.exists](#pnodeexists)
+      - [pnode.valid](#pnodevalid)
+      - [pnode.data](#pnodedata)
+      - [pnode.version](#pnodeversion)
+      - [pnode.parent](#pnodeparent)
+      - [pnode.parents](#pnodeparents)
+      - [pnode.children](#pnodechildren)
+      - [pnode.childrenVersion](#pnodechildrenversion)
+      - [pnode.ctime](#pnodectime)
+      - [pnode.mtime](#pnodemtime)
+      - [pnode.ctxid](#pnodectxid)
+      - [pnode.mtxid](#pnodemtxid)
+      - [pnode.set(value)](#pnodesetvalue)
+      - [pnode.unset()](#pnodeunset)
+      - [pnode.remove()](#pnoderemove)
+      - [pnode.child(name)](#pnodechildname)
+      - [pnode.persist()](#pnodepersist)
+      - [pnode.toJSON()](#pnodetojson)
 - [testing](#testing)
   - [options](#options)
   - [patterns](#patterns)
@@ -82,20 +84,22 @@ The output of the above will be:
 
 ## api
 
+### ptree
+
 `var pharosTree = require('pharos-tree')`
 
-### var ptree = pharosTree()
+#### var ptree = pharosTree()
 
 Create a new Pharos tree (ptree).
 
-### ptree.period
+#### ptree.period
 
 `read-only`, 'number'
 
 The current period. This starts at 0, and is incremented on-demand. Each time this is 
 incremented, the current transaction is reset to 0.
 
-### ptree.txid
+#### ptree.txid
 
 `read-only`, 'number'
 
@@ -103,13 +107,13 @@ The current transaction ID. This starts at 1 (due to the automatic creation of t
 and is incremented by 1 each time a `pnode` is added to or removed from the tree, or any time 
 the data property of a `pnode` is changed.
 
-### ptree.pnodeCount
+#### ptree.pnodeCount
 
 `read-only`, `number`
 
 The number of `pnodes` currently within the `ptree`.
 
-### ptree.createStream(options)
+#### ptree.createStream(options)
 
 Create new stream of change documents. `options` is an object with the following valid properties:
 
@@ -129,11 +133,13 @@ the above format.
 
 returns `stream`
 
-### var pnode = tree('/path/of/pnode')
+### pnode
+
+#### var pnode = tree('/path/of/pnode')
 
 Create a new Pharos node (pnode).
 
-### pnode.path
+#### pnode.path
 
 `read-only` (`read-write` before pnode is persisted), `string`
 
@@ -142,14 +148,14 @@ Path of the pnode. Similar to Unix paths:
 * Path components are seperated by '/'
 * Valid characters are a-z, A-Z, 0-9, ., -, _
 
-### pnode.name
+#### pnode.name
 
 `read-only`, `string`
 
 Contains the last component of the `pnode.path`. If he `pnode.path` === '/servers/web' then 
 `pnode.name` === 'web'.
 
-### pnode.exists
+#### pnode.exists
 
 `read-only`, `true || false`
 
@@ -165,7 +171,7 @@ if ( ptree('/tasks/1').exists ) {
 }
 ```
 
-### pnode.valid
+#### pnode.valid
 
 `read-only`, `true || false`
 
@@ -180,7 +186,7 @@ if ( ptree('/tasks/'+id).valid ) {
 }
 ```
 
-### pnode.data
+#### pnode.data
 
 `read-write`
 
@@ -188,14 +194,14 @@ Data assigned to the pnode. Assignment (of a different value) will cause the pno
 not already. Assignment will also increment the version of the pnode (or set to 1 if unassigned), and the 
 transaction of the ptree.
 
-### pnode.version
+#### pnode.version
 
 `read-only`, `number`
 
 The version of the pnode represents the number of times the `data` property has changed. Upon initial persistance, 
 the version will be 1. Each time `data` changes, the version property will be incremented by 1.
 
-### pnode.parent
+#### pnode.parent
 
 `read-only`, `pnode`
 
@@ -208,7 +214,7 @@ var pnode = ptree('/servers/192.168.1.10');
 assert(pnode.parent.path === '/servers');
 ```
 
-### pnode.parents
+#### pnode.parents
 
 `read-only`, `array of pnodes`
 
@@ -225,7 +231,7 @@ assert(pnode.parents[2].path === '/servers/192.168.1.10');
 assert(pnode.parents[3].path === '/servers/192.168.1.10/processes');
 ```
 
-### pnode.children
+#### pnode.children
 
 `read-only`, `array of pnodes`
 
@@ -244,56 +250,56 @@ assert(pnode.children[1].data.hostname === 'web2');
 assert(pnode.children[2].data.hostname === 'web3');
 ```
 
-### pnode.childrenVersion
+#### pnode.childrenVersion
 
 `read-only`, `number`
 
 The childrenVersion property represents the number of times the children array has changed. This occurs when 
 a child is added or removed. This does not reflect changes to the child nodes themselves.
 
-### pnode.ctime
+#### pnode.ctime
 
 `read-only`, `date`
 
 A date object representing the time the pnode was persisted.
 
-### pnode.mtime
+#### pnode.mtime
 
 `read-only`, `date`
 
 A date object representing the last time the pnode was modified (aka the data property was changed).
 
-### pnode.ctxid
+#### pnode.ctxid
 
 `read-only`, `number`
 
 The `txid` (transaction ID) in which the pnode was created.
 
-### pnode.mtxid
+#### pnode.mtxid
 
 `read-only`, `txid`
 
 The `txid` (transaction ID) in which the pnode was last modified.
 
-### pnode.set(value)
+#### pnode.set(value)
 
 Assign `value` to pnode.data. Assignment (of a different value) will also increment the version of the `pnode` 
 (or set to 1 if unassigned), and the transaction of the `ptree`.
 
 returns `pnode`
 
-### pnode.unset()
+#### pnode.unset()
 
 Return pnode.data to an `undefined` state. Will increment the version of the `pnode` and the `ptree` transaction 
 (if there was a previous assignment).
 
 returns `pnode`
 
-### pnode.remove()
+#### pnode.remove()
 
 Removes the `pnode` from the `ptree` if it was persisted. This will increment the `ptree` transaction.
 
-### pnode.child(name)
+#### pnode.child(name)
 
 Given the `name` property of a child, will return a reference to that child from the `ptree`. If the child does not 
 exist, a new (unpersisted) child `pnode` will be returned.
@@ -310,13 +316,13 @@ if ( !weather.child('Boston').exists ) {
 console.log(weather.child('Boston').data);
 ```
 
-### pnode.persist()
+#### pnode.persist()
 
 Specifically cause the `pnode` to be persisted, without setting a value for `pnode.data`.
 
 returns `pnode`
 
-### pnode.toJSON()
+#### pnode.toJSON()
 
 The JSON representation of a `pnode`: 
 
