@@ -1,5 +1,4 @@
 var through2  = require('through2'),
-    Int64     = require('node-int64'),
     validPath = require('./lib/valid-path'),
     parents   = require('./lib/parents'),
     error     = require('./lib/error')
@@ -7,21 +6,14 @@ var through2  = require('through2'),
 module.exports = function createTree () {
     'use strict';
     var data        = Object.create(null),
-        transaction = 0,
-        period      = 0,
+        txid        = 0,
         numStreams  = 0,
         changes     = through2.obj()
 
     // increment ptree transaction id
     function incTransaction () {
-        transaction++
-        return transaction
-    }
-    // increment ptree period
-    function incPeriod () {
-        period++
-        transaction = 0
-        return period
+        txid++
+        return txid
     }
 
     // create stream of changes
@@ -111,9 +103,9 @@ module.exports = function createTree () {
     // increment pnode version
     function incPnodeVersion (pnode) {
         pnode._version = pnode._version ? pnode._version + 1 : 1
-        pnode._mpxid = ptree.pxid
+        pnode._mtxid = ptree.txid
         pnode._mtime = new Date
-        if (!pnode._cpxid) pnode._cpxid = pnode._mpxid
+        if (!pnode._ctxid) pnode._ctxid = pnode._mtxid
         if (!pnode._ctime) pnode._ctime = pnode._mtime
         return pnode
     }
@@ -166,8 +158,8 @@ module.exports = function createTree () {
         valid          : { enumerable:true,  get: function () { return this.exists ? true : validPath(this.path) } },
         data           : { enumerable: true, get: function () { return this._data }, set: function (value) { setPnodeData(this, value) } },
         version        : { enumerable: true, get: function () { return this._version } },
-        cpxid          : { enumerable: true, get: function () { return this._cpxid } },
-        mpxid          : { enumerable: true, get: function () { return this._mpxid } },
+        ctxid          : { enumerable: true, get: function () { return this._ctxid } },
+        mtxid          : { enumerable: true, get: function () { return this._mtxid } },
         ctime          : { enumerable: true, get: function () { return this._ctime } },
         mtime          : { enumerable: true, get: function () { return this._mtime } },
         parents        : { enumerable: true, get: function () { return pnodeParents(this) } },
@@ -183,9 +175,13 @@ module.exports = function createTree () {
         // JSON representation
         toJSON: { value: function () {
             return {
-                path: this.path,
-                data: this._data,
-                version: this.version
+                path    : this.path,
+                data    : this._data,
+                version : this.version,
+                ctime   : this.ctime,
+                mtime   : this.mtime,
+                ctxid   : this.ctxid,
+                mtxid   : this.mtxid
             }
         } }
     })
@@ -196,12 +192,9 @@ module.exports = function createTree () {
     }
     Object.defineProperties(ptree, {
         // properties
-        pxid        : { enumerable: true, get: function () { return new Int64(period, transaction) } },
-        period      : { enumerable: true, get: function () { return period } },
-        transaction : { enumerable: true, get: function () { return transaction } },
+        txid        : { enumerable: true, get: function () { return txid } },
         pnodeCount  : { enumerable: true, get: function () { return Object.keys(data).length } },
         // functions
-        incPeriod   : { value: incPeriod },
         createStream: { value: createStream },
         // pnode prototype
         pnode       : { value: TreePnode.prototype }
