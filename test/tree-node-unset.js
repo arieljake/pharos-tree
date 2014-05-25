@@ -1,21 +1,22 @@
 var test       = require('tape'),
     createTree = require('..')
 
-test('node.unset()', function (t) {
-    var tree = createTree(),
-        node = tree('/test')
+test('pnode.unset()', function (t) {
+    var tree  = createTree(),
+        pnode = tree('/test')
 
     var changeCount = 0
     tree.createStream( {objectMode:true} ).on('data', function (event) {
         if (event.op !== 'change') return
         changeCount++
-        t.ok(changeCount === 1             , 'does not emit a change unless there was a value')
-        t.ok(event.node.data === undefined , 'emits a change whwn a value existed')
+        t.equal(changeCount, 1               , 'does not emit a change unless there was a value')
+        t.equal(event.pnode.data, undefined  , 'emits a change whwn a value existed')
     })
 
-    t.plan(6)
-    t.doesNotThrow(node.unset.bind(node)   , 'can be called before value is set')
-    t.ok(node.set('stuff').unset() === node, 'returns node')
-    t.ok(node.exists                       , 'does not unpersist node')
-    t.ok(node.data === undefined           , 'causes data to be undefined')
+    t.plan(7)
+    t.doesNotThrow(pnode.unset.bind(pnode)   , 'can be called before value is set')
+    t.equal(pnode.set('stuff').unset(), pnode, 'returns pnode')
+    t.equal(pnode.version, 2                 , 'increments version')
+    t.ok(pnode.exists                        , 'does not unpersist pnode')
+    t.equal(pnode.data, undefined            , 'causes data to be undefined')
 })

@@ -1,7 +1,7 @@
 var test       = require('tape'),
     createTree = require('..')
 
-test('root node', function (t) {
+test('root pnode', function (t) {
     var tree = createTree(),
         root = tree('/')
     function chPath () {

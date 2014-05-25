@@ -1,13 +1,13 @@
 var test       = require('tape'),
     createTree = require('..')
 
-test('node.set()', function (t) {
-    var tree = createTree(),
-        node = tree('/test')
+test('pnode.set()', function (t) {
+    var tree  = createTree(),
+        pnode = tree('/test')
 
-    t.ok(node.set('stuff') === node, 'returns node')
-    t.ok(node.exists               , 'causes node to persist')
-    t.ok(node.data === 'stuff'     , 'can be read after assignent')
+    t.equal(pnode.set('stuff'), pnode, 'returns pnode')
+    t.ok(pnode.exists                , 'causes pnode to persist')
+    t.equal(pnode.data, 'stuff'      , 'can be read after assignent')
 
     t.end()
 })

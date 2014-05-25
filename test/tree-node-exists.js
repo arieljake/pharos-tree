@@ -1,15 +1,15 @@
 var test       = require('tape'),
     createTree = require('..')
 
-test('node.exists', function (t) {
-    var tree  = createTree(),
-        node1 = tree('/test1').persist(),
-        node2 = tree('/test2'),
-        node3 = tree()
+test('pnode.exists', function (t) {
+    var tree   = createTree(),
+        pnode1 = tree('/test1').persist(),
+        pnode2 = tree('/test2'),
+        pnode3 = tree()
 
-    t.ok(node1.exists   , 'is true when node is persisted')
-    t.notOk(node2.exists, 'is false when node is not persisted')
-    t.notOk(node3.exists, 'is false when node has no path')
+    t.ok(pnode1.exists   , 'is true when pnode is persisted')
+    t.notOk(pnode2.exists, 'is false when pnode is not persisted')
+    t.notOk(pnode3.exists, 'is false when pnode has no path')
 
     t.end()
 })
