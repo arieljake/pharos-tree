@@ -4,7 +4,7 @@ var createTree = require('..')
 
 var tree = createTree();
 
-tree.createStream().pipe(process.stdout); // {op: 'create', node: {...} }
+tree.createStream().pipe(process.stdout); // {op: 'create', pnode: {...} }
 
 var task1 = tree('/tasks/1');
 
@@ -17,7 +17,7 @@ task1.child('status').set('completed');
 
 var tasks = tree('/tasks').children;
 assert(tasks.length === 3);
-assert(tree.node.isPrototypeOf(tasks[0]));
+assert(tree.pnode.isPrototypeOf(tasks[0]));
 assert(tasks[0].data === 'crawl');
 assert(tasks[0].children[0].name === 'status');
 
