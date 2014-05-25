@@ -175,11 +175,11 @@ module.exports = function createTree () {
         children       : { enumerable: true, get: function () { return pnodeChildren(this) } },
         childrenVersion: { enumerable: true, get: function () { return this._childrenVersion } },
         // functions
-        persist        : { value: function ()      { return persistPnode(this) } },
         set            : { value: function (value) { return setPnodeData(this, value) } },
         unset          : { value: function ()      { return unsetPnodeData(this) } },
         remove         : { value: function ()      { return removePnode(this) } },
         child          : { value: function (name)  { return ptree(this.path + '/' + name) } },
+        persist        : { value: function ()      { return persistPnode(this) } },
         // JSON representation
         toJSON: { value: function () {
             return {

@@ -5,26 +5,27 @@ Create trees of pnodes (Pharos nodes).
 ## example
 
 ```javascript
-var createTree = require('pharos-tree'),
+var pharosTree = require('pharos-tree'),
     assert     = require('assert');
 
-var tree = createTree();
-tree.createStream().pipe(process.stdout);
 
-var task1 = tree('/tasks/1');
+var ptree = pharosTree();
+ptree.createStream().pipe(process.stdout);
+
+var task1 = ptree('/tasks/1');
 task1.set('crawl');
 
-tree('/tasks/2').set('walk');
-tree('/tasks/3').set('run');
+ptree('/tasks/2').set('walk');
+ptree('/tasks/3').set('run');
 
 task1.child('status').set('pending');
 assert(task1.child('status').version === 1);
 task1.child('status').set('completed');
 assert(task1.child('status').version === 2);
 
-var tasks = tree('/tasks').children;
+var tasks = ptree('/tasks').children;
 assert(tasks.length === 3);
-assert(tree.pnode.isPrototypeOf(tasks[0]));
+assert(ptree.pnode.isPrototypeOf(tasks[0]));
 assert(tasks[0].data === 'crawl');
 assert(tasks[0].children[0].name === 'status');
 
@@ -46,14 +47,43 @@ The output of the above will be:
 
 ## api
 
-`var createTree = require('pharos-tree')`
+`var pharosTree = require('pharos-tree')`
 
-### var ptree = createTree()
+### var ptree = pharosTree()
 
-Create a new Pharos tree.
+Create a new Pharos tree (ptree).
 
-### var pnode = tree()
+### var pnode = tree('/path/of/pnode')
 
+Create a new Pharos node (pnode).
+
+### pnode.path
+
+Path of the pnode. Similar to Unix paths:
+* Must start with a '/', may not end with one
+* Path components are seperated by '/'
+* Valid characters are a-z, A-Z, 0-9, ., -, _
+
+### pnode.name
+
+Contains the last component of the `pnode.path`. If he `pnode.path` === '/servers/web' then 
+`pnode.name` === 'web'.
+
+### pnode.exists
+
+Contains `true` if the pnode has been `persisted`, otherwise `false`. A pnode is automatically persisted when 
+a value is assigned to it's data property, or when a descendant is persisted. A pnode may 
+also be manually persisted by calling `pnode.persist()`.
+
+Example:
+
+```javascript
+if ( ptree('/tasks/1').exists ) {
+    // do something
+}
+```
+
+### Still developing
 
 ## testing
 
