@@ -29,12 +29,14 @@ test('pnode', function (t) {
         ctxid = pnode.ctxid,
         mtxid = pnode.mtxid
     t.equal(pnode.version, 1               , 'version is 1 after persist')
-    pnode.data = 'y'
-    t.equal(pnode.version, 2               , 'version is 2 after 1st change')
-    t.equal(pnode.ctime, ctime             , 'ctime does not change')
-    t.equal(pnode.ctxid, ctxid             , 'ctxid does not change')
-    t.ok(pnode.mtime > mtime               , 'mtime is more recent after change')
-    t.ok(pnode.mtxid > mtxid               , 'mtxid is larger after change')
+    setTimeout(function () {
+        pnode.data = 'y'
+        t.equal(pnode.version, 2           , 'version is 2 after 1st change')
+        t.equal(pnode.ctime, ctime         , 'ctime does not change')
+        t.equal(pnode.ctxid, ctxid         , 'ctxid does not change')
+        t.ok(pnode.mtime > mtime           , 'mtime is more recent after change')
+        t.ok(pnode.mtxid > mtxid           , 'mtxid is larger after change')
 
-    t.end()
+        t.end()
+    }, 1)
 })
