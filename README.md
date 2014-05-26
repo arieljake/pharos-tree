@@ -1,5 +1,13 @@
 # pharos-tree
 
+[![Build Status](https://travis-ci.org/jasonpincin/pharos-tree.svg?branch=master)](https://travis-ci.org/jasonpincin/pharos-tree)
+[![Coverage Status](https://coveralls.io/repos/jasonpincin/pharos-tree/badge.png?branch=master)](https://coveralls.io/r/jasonpincin/pharos-tree?branch=master)
+[![NPM version](https://badge.fury.io/js/pharos-tree.png)](http://badge.fury.io/js/pharos-tree)
+[![Davis Dependency Status](https://david-dm.org/jasonpincin/pharos-tree.png)](https://david-dm.org/jasonpincin/pharos-tree)
+
+[![browser support](https://ci.testling.com/jasonpincin/pharos-tree.png)
+](https://ci.testling.com/jasonpincin/pharos-tree)
+
 Create trees of data nodes. Stream tree transactions.
 
 ## example
