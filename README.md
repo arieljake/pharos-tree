@@ -347,6 +347,8 @@ The JSON representation of a `pnode`:
 * `--dot` - output test results as dots instead of tap
 * `--spec` - output test results as spec instead of tap
 * `--coverage` - display text cover report
+* `--testling` - run tests in browser via testling (cannot be used with --coverage and 
+  expects both browserify and testling to be installed globally)
 
 ### patterns
 

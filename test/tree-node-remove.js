@@ -12,7 +12,8 @@ test('pnode.remove()', function (t) {
     t.equal(pnode.remove().exists, false   , 'results in an unpersisted pnode')
     t.equal(ptree('/a').children.length, 0  , 'removes pnode from parent.children')
     t.equals(pnode.remove(), pnode         , 'has no affect on an unpersisted pnode')
-    t.throws(root.remove.bind(root), Error , 'throws an error on root pnode')
+    var rootRemove = function () { root.remove() }
+    t.throws(rootRemove, Error             , 'throws an error on root pnode')
     t.ok(!child1.exists && !child2.exists  , 'removes children')
 
     t.end()

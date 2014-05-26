@@ -1,5 +1,6 @@
-var test       = require('tape'),
-    pharosTree = require('..')
+var test         = require('tape'),
+    pharosTree   = require('..'),
+    setImmediate = setImmediate || process.nextTick
 
 test('change stream', function (t) {
     var ptree        = pharosTree(),
@@ -17,7 +18,6 @@ test('change stream', function (t) {
 
     t.plan(54)
     function validate (data, num) {
-        console.log(data, objExpected[num])
         var mode = 'object'
         if (typeof data === 'string') {
             mode = 'simple'

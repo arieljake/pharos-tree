@@ -1,10 +1,10 @@
-var through2  = require('through2'),
-    validPath = require('./lib/valid-path'),
-    parents   = require('./lib/parents'),
-    error     = require('./lib/error')
+var through2     = require('through2'),
+    validPath    = require('./lib/valid-path'),
+    parents      = require('./lib/parents'),
+    error        = require('./lib/error'),
+    setImmediate = setImmediate || process.nextTick
 
 module.exports = function createTree () {
-    'use strict';
     var data        = Object.create(null),
         txid        = 0,
         numStreams  = 0,

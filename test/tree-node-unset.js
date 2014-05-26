@@ -14,7 +14,8 @@ test('pnode.unset()', function (t) {
     })
 
     t.plan(7)
-    t.doesNotThrow(pnode.unset.bind(pnode)   , 'can be called before value is set')
+    var pnodeUnset = function () { pnode.unset() }
+    t.doesNotThrow(pnodeUnset                , 'can be called before value is set')
     t.equal(pnode.set('stuff').unset(), pnode, 'returns pnode')
     t.equal(pnode.version, 2                 , 'increments version')
     t.ok(pnode.exists                        , 'does not unpersist pnode')
