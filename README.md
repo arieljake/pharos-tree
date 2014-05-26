@@ -349,7 +349,7 @@ The JSON representation of a `pnode`:
 
 ## testing
 
-`[grep=pattern] npm test [--dot | --spec] [--coverage]`
+`[grep=pattern] npm test [--dot | --spec] [--coverage | --testling]`
 
 ### options
 
