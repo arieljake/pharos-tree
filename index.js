@@ -4,7 +4,7 @@ var through2     = require('through2'),
     error        = require('./lib/error'),
     setImmediate = setImmediate || process.nextTick
 
-module.exports = function createTree () {
+module.exports = function pharosTree () {
     var data        = Object.create(null),
         txid        = 0,
         numStreams  = 0,
