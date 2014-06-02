@@ -38,7 +38,7 @@ test:
 	$(if $(filter testling, $(runner)), @echo "Running tests in browser via testling.",)
 	$(if $(grep), @echo "Running test files that match pattern: $(grep)\n",)
 	@mkdir -p coverage
-	@jshint *.js */*.js 2>&1 | cat > coverage/linterror
+	@if [ -d lib ]; then jshint *.js lib/*.js example/*.js test/*.js 2>&1 | cat > coverage/linterror; else jshint *.js lib/*.js example/*.js test/*.js 2>&1 | cat > coverage/linterror; fi
 	$(if $(filter-out tap, $(reporter)), @printf $(cc_red),)
 	@if [ -s coverage/linterror ]; then cat coverage/linterror | sed '/^$$/d' | sed 's/\([0-9][0-9]*\) error/\1 jshint error/'; echo; exit 1; fi
 	$(if $(filter-out tap, $(reporter)), @printf $(cc_normal),)
