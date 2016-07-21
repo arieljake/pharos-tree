@@ -176,6 +176,7 @@ module.exports = function pharosTree () {
         toJSON: { value: function () {
             return {
                 path    : this.path,
+                parent  : this.parent.path,
                 data    : this._data,
                 version : this.version,
                 ctime   : this.ctime,
